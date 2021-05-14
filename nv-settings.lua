@@ -17,7 +17,7 @@ O.treesitter.ensure_installed = "all"
 O.treesitter.ignore_install = {"haskell"}
 O.treesitter.highlight.enabled = true
 O.treesitter.playground.enabled = true
-O.treesitter.rainbow.enabled = false
+O.treesitter.rainbow.enabled = true
 
 
 O.clang.diagnostics.virtual_text = false

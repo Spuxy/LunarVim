@@ -46,9 +46,10 @@ vim.api.nvim_set_keymap('i', 'jk', '<ESC>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', 'kj', '<ESC>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('i', 'jj', '<ESC>', {noremap = true, silent = true})
 
--- Tab switch buffer
-vim.api.nvim_set_keymap('n', '<TAB>', ':bnext<CR>', {noremap = true, silent = true})
-vim.api.nvim_set_keymap('n', '<S-TAB>', ':bprevious<CR>', {noremap = true, silent = true})
+-- Tab manipulation buffer
+vim.api.nvim_set_keymap('n', '<A-Right>', ':bnext<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-Left>', ':bprevious<CR>', {noremap = true, silent = true})
+vim.api.nvim_set_keymap('n', '<A-w>', ':BufferClose<CR>', {noremap = true, silent = true})
 
 -- Move selected line / block of text in visual mode
 vim.api.nvim_set_keymap('x', 'K', ':move \'<-2<CR>gv-gv', {noremap = true, silent = true})
@@ -68,3 +69,18 @@ vim.cmd('inoremap <expr> <c-k> (\"\\<C-p>\")')
 -- map <leader>n <Plug>(miniyank-cycle)
 -- map <leader>N <Plug>(miniyank-cycleback)
 -- ]])
+
+-- Key for explorer menu
+vim.cmd('nnoremap <silent> <C-n> :NvimTreeToggle<CR>')
+
+-- Key for find file menu
+vim.cmd('nnoremap <silent> <C-p> :Telescope find_files<CR>')
+
+-- Shift buffer tab
+vim.cmd('nnoremap <silent> <S-A-Left> :BufferMovePrevious<CR>')
+vim.cmd('nnoremap <silent> <S-A-Right> :BufferMoveNext<CR>')
+
+vim.cmd('nnoremap <silent> <C-o> :Vista!!<CR>')
+
+-- vim.cmd('nnoremap <silent> <C-p> :Lspsaga diagnostic_jump_prev<CR>')
+-- vim.cmd('nnoremap <silent> <C-n> :Lspsaga diagnostic_jump_next<CR>')

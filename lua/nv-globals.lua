@@ -5,8 +5,9 @@ O = {
     hidden_files = true,
     wrap_lines = false,
     number = true,
+	rainbow_active = 1,
     relative_number = true,
-    shell = 'bash',
+    shell = 'zsh',
 
     -- @usage pass a table with your desired languages
     treesitter = {
@@ -14,7 +15,7 @@ O = {
         ignore_install = {"haskell"},
         highlight = {enabled = true},
         playground = {enabled = true},
-        rainbow = {enabled = false}
+        rainbow = {enabled = true}
     },
 
     database = {save_location = '~/.config/nvcode_db', auto_execute = 1},

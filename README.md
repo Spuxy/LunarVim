@@ -209,3 +209,20 @@ features when I have time
 **PLUGIN BUGS**
 
 REACT COMMENTING IS A NIGHTMARE (the filetype is just not recognized idk why)
+
+PHP
+Phpactor potreba composer install v .local/share etc...
+Vista plugin potrebuje ctags
+# install libjansson first
+$ sudo apt-get install libjansson-dev
+
+# then compile and install universal-ctags.
+#
+# NOTE: Don't use `sudo apt install ctags`, which will install exuberant-ctags and it's not guaranteed to work with vista.vim.
+#
+$ git clone https://github.com/universal-ctags/ctags.git --depth=1
+$ cd ctags
+$ ./autogen.sh
+$ ./configure
+$ make
+$ sudo make install

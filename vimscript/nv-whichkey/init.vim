@@ -194,24 +194,29 @@ let g:which_key_map.G = {
       " \ 'a' : [':Gist -a'                          , 'post gist anon'],
 
 " l is for language server protocol
-let g:which_key_map.l = {
+let g:which_key_map.p = {
       \ 'name' : '+lsp' ,
       \ 'a' : [':Lspsaga code_action'                , 'code action'],
       \ 'A' : [':Lspsaga range_code_action'          , 'selected action'],
       \ 'd' : [':Telescope lsp_document_diagnostics' , 'document diagnostics'],
       \ 'D' : [':Telescope lsp_workspace_diagnostics', 'workspace diagnostics'],
       \ 'f' : [':LspFormatting'                      , 'format'],
-      \ 'I' : [':LspInfo'                            , 'lsp info'],
+      \ 'o' : [':Vista'                              , 'go to symbol'],
+      \ 'O' : [':Vista finder fzf'                   , 'symbols fzf'],
       \ 'v' : [':LspVirtualTextToggle'               , 'lsp toggle virtual text'],
       \ 'l' : [':Lspsaga lsp_finder'                 , 'lsp finder'],
       \ 'L' : [':Lspsaga show_line_diagnostics'      , 'line_diagnostics'],
       \ 'p' : [':Lspsaga preview_definition'         , 'preview definition'],
       \ 'q' : [':Telescope quickfix'                 , 'quickfix'],
-      \ 'r' : [':Lspsaga rename'                     , 'rename'],
+      \ 'R' : [':Lspsaga rename'                     , 'rename'],
       \ 'T' : [':LspTypeDefinition'                  , 'type defintion'],
       \ 'x' : [':cclose'                             , 'close quickfix'],
       \ 's' : [':Telescope lsp_document_symbols'     , 'document symbols'],
       \ 'S' : [':Telescope lsp_workspace_symbols'    , 'workspace symbols'],
+      \ 'c' : [':PhpactorTransform'		               , 'fixnamespace,complete construct,add missing props'],
+      \ 'm' : [':PhpactorContextMenu'		             , 'generate method'],
+      \ 'i' : [':PhpactorImportClass'		             , 'import class'],
+      \ 'I' : [':PhpactorImportMissingClasses'       , 'import missing class'],
       \ }
       " \ 'H' : [':Lspsaga signature_help'             , 'signature_help'],
       " \ 'o' : [':Vista!!'                            , 'outline'],
@@ -233,6 +238,21 @@ let g:which_key_map.t = {
       \ }
       " \ 'r' : [':FloatermNew ranger'                            , 'ranger'],
 
+" d is for debug
+let g:which_key_map.n = {
+      \ 'name' : '+todo' ,
+      \ 'b' : [':TodoQuickFix '        , 'quick list all todos'],
+      \ 'c' : [':TodoTrouble'                 , 'todos per by class'],
+      \ 'i' : [':TodoTelescope'                 , 'fzf todos'],
+      \ 'todo' : ['s'                 , 'TODO:'],
+      \ 'hack' : ['s'                 , 'HACK:'],
+      \ 'perf' : ['s'                 , 'PERF:'],
+      \ 'warning' : ['s'                 , 'WARNING:'],
+      \ 'note' : ['s'                 , 'NOTE:'],
+      \ 'fix' : ['s'                 , 'FIX:'],
+      \ }
+      " \ 'O' : ['DebugStepOut'                  , 'next-buffer'],
+      " \ 'S' : ['DebugGetSession '              , 'fzf-buffer'],
 " let g:which_key_map.R = {
 "       \ 'name' : '+Find_Replace' ,
 "       \ 'f' : [':Farr --source=vimgrep'    , 'file'],

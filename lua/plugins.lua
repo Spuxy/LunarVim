@@ -19,7 +19,16 @@ require('packer').init({display = {auto_clean = false}})
 return require('packer').startup(function(use)
     -- Packer can manage itself as an optional plugin
     use 'wbthomason/packer.nvim'
+    -- Todo plugin
+    use {"folke/todo-comments.nvim", config = function() require("todo-comments").setup {} end }
+    use {"folke/trouble.nvim", config = function() require("trouble").setup {} end }
+    
+	-- Raibow braces
+	use {"luochen1990/rainbow"}
 
+	--Fzf for vista
+	use {'liuchengxu/vista.vim'}
+	use {'junegunn/fzf'}
     -- Information
     -- use 'nanotee/nvim-lua-guide'
 
@@ -33,6 +42,10 @@ return require('packer').startup(function(use)
     use 'kosayoda/nvim-lightbulb'
     use 'mfussenegger/nvim-jdtls'
     use 'kabouzeid/nvim-lspinstall'
+
+	-- Snippets
+	use 'SirVer/ultisnips'
+	use 'honza/vim-snippets'
 
     -- Debugging
     use 'mfussenegger/nvim-dap'
@@ -125,6 +138,9 @@ return require('packer').startup(function(use)
     use 'mbbill/undotree'
 	use 'nacro90/numb.nvim'
 	use 'turbio/bracey.vim'
+
+	-- Surround text from tpope
+	use {'tpope/vim-surround'}
 
     -- Database
     use 'tpope/vim-dadbod'
