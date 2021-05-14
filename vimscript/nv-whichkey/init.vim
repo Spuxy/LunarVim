@@ -194,14 +194,14 @@ let g:which_key_map.G = {
       " \ 'a' : [':Gist -a'                          , 'post gist anon'],
 
 " l is for language server protocol
-let g:which_key_map.p = {
+let g:which_key_map.l = {
       \ 'name' : '+lsp' ,
       \ 'a' : [':Lspsaga code_action'                , 'code action'],
       \ 'A' : [':Lspsaga range_code_action'          , 'selected action'],
       \ 'd' : [':Telescope lsp_document_diagnostics' , 'document diagnostics'],
       \ 'D' : [':Telescope lsp_workspace_diagnostics', 'workspace diagnostics'],
       \ 'f' : [':LspFormatting'                      , 'format'],
-      \ 'o' : [':Vista'                              , 'go to symbol'],
+      \ 'o' : [':Vista!!'                              , 'go to symbol'],
       \ 'O' : [':Vista finder fzf'                   , 'symbols fzf'],
       \ 'v' : [':LspVirtualTextToggle'               , 'lsp toggle virtual text'],
       \ 'l' : [':Lspsaga lsp_finder'                 , 'lsp finder'],
@@ -213,13 +213,23 @@ let g:which_key_map.p = {
       \ 'x' : [':cclose'                             , 'close quickfix'],
       \ 's' : [':Telescope lsp_document_symbols'     , 'document symbols'],
       \ 'S' : [':Telescope lsp_workspace_symbols'    , 'workspace symbols'],
-      \ 'c' : [':PhpactorTransform'		               , 'fixnamespace,complete construct,add missing props'],
-      \ 'm' : [':PhpactorContextMenu'		             , 'generate method'],
-      \ 'i' : [':PhpactorImportClass'		             , 'import class'],
-      \ 'I' : [':PhpactorImportMissingClasses'       , 'import missing class'],
       \ }
       " \ 'H' : [':Lspsaga signature_help'             , 'signature_help'],
       " \ 'o' : [':Vista!!'                            , 'outline'],
+
+let g:which_key_map.p = {
+      \ 'name' : '+php' ,
+      \ 't' : [':PhpactorTransform'		               , 'fixnamespace,complete construct,add missing props'],
+      \ 'c' : [':PhpactorContextMenu'		             , 'Context Menu'],
+      \ 'i' : [':PhpactorImportClass'		             , 'import class'],
+      \ 'I' : [':PhpactorImportMissingClasses'       , 'import missing class'],
+      \ 'e' : [':PhpactorExtractMethod'              , 'select extract method'],
+      \ 'E' : [':PhpactorClassExpand'                , 'expand class'],
+      \ 'v' : [':PhpactorChangeVisibility'           , 'visibility'],
+      \ 'n' : [':PhpactorClassNew'                   , 'new class'],
+      \ 'C' : [':PhpactorCopyFile'                   , 'copy class'],
+      \ 'm' : [':PhpactorMoveFile'                   , 'move class'],
+      \ }
 
 " t is for terminal
 let g:which_key_map.t = {
