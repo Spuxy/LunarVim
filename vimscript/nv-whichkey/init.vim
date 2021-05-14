@@ -211,8 +211,10 @@ let g:which_key_map.l = {
       \ 'R' : [':Lspsaga rename'                     , 'rename'],
       \ 'T' : [':LspTypeDefinition'                  , 'type defintion'],
       \ 'x' : [':cclose'                             , 'close quickfix'],
-      \ 's' : [':Telescope lsp_document_symbols'     , 'document symbols'],
-      \ 'S' : [':Telescope lsp_workspace_symbols'    , 'workspace symbols'],
+      \ 'h' : [':Lspsaga hover_doc'                  , 'hover documentation'],
+      \ 's' : [':Lspsaga signature_help'             , 'signature'],
+      \ 'N' : [':Lspsaga diagnostic_jump_next'       , 'diagnostic next'],
+      \ 'P' : [':Lspsaga diagnostic_jump_prev'       , 'diagnostic prev'],
       \ }
       " \ 'H' : [':Lspsaga signature_help'             , 'signature_help'],
       " \ 'o' : [':Vista!!'                            , 'outline'],
