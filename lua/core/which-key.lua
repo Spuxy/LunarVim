@@ -62,15 +62,19 @@ M.config = function()
       ["/"] = { ":CommentToggle<CR>", "Comment" },
     },
     mappings = {
+      ["v"] = { "<cmd>vsplit<CR>", "VSplit" },
+      ["h"] = { "<cmd>split<CR>", "HSplit" },
       ["w"] = { "<cmd>w!<CR>", "Save" },
       ["q"] = { "<cmd>q!<CR>", "Quit" },
       ["/"] = { "<cmd>CommentToggle<CR>", "Comment" },
       ["c"] = { "<cmd>BufferClose!<CR>", "Close Buffer" },
       ["f"] = { "<cmd>Telescope find_files<CR>", "Find File" },
-      ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+      ["e"] = { "<cmd>:HopWord<CR>", "EasyMotion" },
+      ["H"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+      ["G"] = {" <cmd>:DogeGenerate<CR>", "generate doc"},
       b = {
         name = "Buffers",
-        j = { "<cmd>BufferPick<cr>", "jump to buffer" },
+        b = { "<cmd>BufferPick<cr>", "jump to buffer" },
         f = { "<cmd>Telescope buffers<cr>", "Find buffer" },
         w = { "<cmd>BufferWipeout<cr>", "wipeout buffer" },
         e = {
@@ -100,7 +104,24 @@ M.config = function()
         S = { "<cmd>PackerStatus<cr>", "Status" },
         u = { "<cmd>PackerUpdate<cr>", "Update" },
       },
-
+      n = {
+        name = "Todo",
+        n = { "<cmd>TodoTrouble<cr>", "Term" },
+        F = { "FIX: ", "Fix" },
+        H = { "HACK: ", "HACK" },
+        P = { "PREF: ", "PREF" },
+        T = { "TODO: ", "TODO" },
+        N = { "NOTE: ", "NOTE" },
+        W = { "WARNING: ", "WARNING" },
+        f = { "<cmd>TodoTelescope<cr>", "Telescope" },
+      },
+      d = {
+       name = '+database' ,
+       u = {'<cmd>DBUIToggle<CR>'        , 'db ui toggle'},
+       f = {'<cmd>DBUIFindBuffe<CR>'     , 'db find buffer'},
+       r = {'<cmd>DBUIRenameBuffe<CR>'   , 'db rename buffer'},
+       l = {'<cmd>DBUILastQueryInf<CR>'  , 'db last query'},
+      },
       -- " Available Debug Adapters:
       -- "   https://microsoft.github.io/debug-adapter-protocol/implementors/adapters/
       -- " Adapter configuration and installation instructions:
@@ -129,10 +150,9 @@ M.config = function()
           "Checkout commit(for current file)",
         },
       },
-
       l = {
         name = "LSP",
-        a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
+        a = { "<cmd>:Lspsaga code_action<cr>", "Code Action" },
         d = {
           "<cmd>Telescope lsp_document_diagnostics<cr>",
           "Document Diagnostics",
@@ -141,29 +161,29 @@ M.config = function()
           "<cmd>Telescope lsp_workspace_diagnostics<cr>",
           "Workspace Diagnostics",
         },
-        -- f = { "<cmd>silent FormatWrite<cr>", "Format" },
-        f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
+        f = { "<cmd>silent FormatWrite<cr>", "Format" },
         i = { "<cmd>LspInfo<cr>", "Info" },
         j = {
-          "<cmd>lua vim.lsp.diagnostic.goto_next({popup_opts = {border = lvim.lsp.popup_border}})<cr>",
+          ":Lspsaga diagnostic_jump_next<cr>",
           "Next Diagnostic",
         },
         k = {
-          "<cmd>lua vim.lsp.diagnostic.goto_prev({popup_opts = {border = lvim.lsp.popup_border}})<cr>",
+          ":Lspsaga diagnostic_jump_prev<cr>",
           "Prev Diagnostic",
         },
-        p = {
-          name = "Peek",
-          d = { "<cmd>lua require('lsp.peek').Peek('definition')<cr>", "Definition" },
-          t = { "<cmd>lua require('lsp.peek').Peek('typeDefinition')<cr>", "Type Definition" },
-          i = { "<cmd>lua require('lsp.peek').Peek('implementation')<cr>", "Implementation" },
-        },
-        q = { "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>", "Quickfix" },
-        r = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
-        s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
-        S = {
+        l = { "<cmd>silent lua require('lint').try_lint()<cr>", "Lint" },
+        q = { "<cmd>Telescope quickfix<cr>", "Quickfix" },
+        h = { "<cmd>:Lspsaga hover_doc<cr>", "Hover Doc" },
+        p = { "<cmd>:Lspsaga preview_definition<cr>", "Preview" },
+        r = { "<cmd>:Lspsaga rename<cr>", "Rename" },
+        s = { "<cmd>:Lspsaga signature_help<cr>", "Signature" },
+        O = {
           "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>",
           "Workspace Symbols",
+        },
+        o = {
+          "<cmd>:SymbolsOutline<cr>",
+          "Outline Symbols",
         },
       },
       L = {
@@ -203,6 +223,11 @@ M.config = function()
           P = { "<cmd>edit ~/.cache/nvim/packer.nvim.log<cr>", "Open the Packer logfile" },
         },
       },
+      r = {
+        name = "Rest",
+        r = {"<cmd>:lua require('rest-nvim').run()<CR>", "Run Http"},
+        p = {"<cmd>:lua require('rest-nvim').run()<CR>", "Preview Http"},
+      },
       s = {
         name = "Search",
         b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
@@ -219,6 +244,13 @@ M.config = function()
           "<cmd>lua require('telescope.builtin.internal').colorscheme({enable_preview = true})<cr>",
           "Colorscheme with Preview",
         },
+      },
+      t = {
+        name = "Terminal",
+        t = { ":FloatermToggle<cr>", "Toggle" },
+        n = { ":FloatermNew<cr>", "New" },
+        h = { ":FloatermPrev<cr>", "Prev" },
+        l = { ":FloatermNext<cr>", "Next" },
       },
       T = {
         name = "Treesitter",
