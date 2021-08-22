@@ -353,7 +353,7 @@ return {
       hint_enable = true, -- virtual hint enable
       hint_prefix = "🤙 ",  -- Panda for parameter
       hint_scheme = "String",
-      use_lspsaga = true,  -- set to true if you want to use lspsaga popup
+      use_lspsaga = false,  -- set to true if you want to use lspsaga popup
       hi_parameter = "Search", -- how your parameter will be highlight
       max_height = 12, -- max height of signature floating_window, if content is more than max_height, you can scroll down
       max_width = 120, -- max_width of signature floating_window, line will be wrapped if exceed max_width
@@ -369,7 +369,6 @@ return {
   { 'sindrets/diffview.nvim' },
   { 'christianchiarulli/nvcode-color-schemes.vim' },
   { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' },
-  { 'morhetz/gruvbox' },
   {
     'kristijanhusak/orgmode.nvim',
     ft = {'org'},
