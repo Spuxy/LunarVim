@@ -1,4 +1,5 @@
-CONFIG_PATH = os.getenv "HOME" .. "/.local/share/lunarvim/lvim"
+local home_dir = vim.loop.os_homedir()
+CONFIG_PATH = home_dir .. "/.local/share/lunarvim/lvim"
 DATA_PATH = vim.fn.stdpath "data"
 CACHE_PATH = vim.fn.stdpath "cache"
 TERMINAL = vim.fn.expand "$TERMINAL"
@@ -7,32 +8,15 @@ vim.cmd [[ set spellfile=~/.config/lvim/spell/en.utf-8.add ]]
 
 lvim = {
   leader = "space",
-  colorscheme = "spacegray",
+  colorscheme = "onedarker",
   line_wrap_cursor_movement = true,
   transparent_window = false,
   format_on_save = true,
-  vsnip_dir = os.getenv "HOME" .. "/.config/snippets",
+  vsnip_dir = home_dir .. "/.config/snippets",
   database = { save_location = "~/.config/lunarvim_db", auto_execute = 1 },
   keys = {},
 
-  -- TODO why do we need this?
-  builtin = {
-    lspinstall = {},
-    telescope = {},
-    compe = {},
-    autopairs = {},
-    treesitter = {},
-    nvimtree = {},
-    gitsigns = {},
-    which_key = {},
-    comment = {},
-    project = {},
-    lualine = {},
-    bufferline = {},
-    dap = {},
-    dashboard = {},
-    terminal = {},
-  },
+  builtin = {},
 
   log = {
     ---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
@@ -147,6 +131,20 @@ lvim.lang = {
       provider = "beancount",
       setup = {
         cmd = { "beancount-langserver" },
+      },
+    },
+  },
+  bicep = {
+    formatters = {},
+    linters = {},
+    lsp = {
+      provider = "bicep",
+      setup = {
+        cmd = {
+          "dotnet",
+          DATA_PATH .. "/lspinstall/bicep/Bicep.LangServer.dll",
+        },
+        filetypes = { "bicep" },
       },
     },
   },
@@ -350,7 +348,7 @@ lvim.lang = {
       },
     },
   },
-  docker = {
+  dockerfile = {
     formatters = {},
     linters = {},
     lsp = {
@@ -700,6 +698,16 @@ lvim.lang = {
       setup = {},
     },
   },
+  solidity = {
+    formatters = {},
+    linters = {},
+    lsp = {
+      provider = "solang",
+      setup = {
+        cmd = { "solang", "--language-server" },
+      },
+    },
+  },
   sql = {
     formatters = {
       -- {
@@ -964,15 +972,15 @@ lvim.lang = {
     },
   },
   tailwindcss = {
-    active = false,
-    filetypes = {
-      "html",
-      "css",
-      "scss",
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact",
+    lsp = {
+      active = false,
+      provider = "tailwindcss",
+      setup = {
+        cmd = {
+          DATA_PATH .. "/lspinstall/tailwindcss/node_modules/.bin/tailwindcss-language-server",
+          "--stdio",
+        },
+      },
     },
   },
   terraform = {
@@ -1093,6 +1101,27 @@ lvim.lang = {
         cmd = {
           DATA_PATH .. "/lspinstall/vue/node_modules/.bin/vls",
         },
+        root_dir = function(fname)
+          local util = require "lspconfig/util"
+          return util.root_pattern "package.json"(fname) or util.root_pattern "vue.config.js"(fname) or vim.fn.getcwd()
+        end,
+        init_options = {
+          config = {
+            vetur = {
+              completion = {
+                autoImport = true,
+                tagCasing = "kebab",
+                useScaffoldSnippets = true,
+              },
+              useWorkspaceDependencies = true,
+              validation = {
+                script = true,
+                style = true,
+                template = true,
+              },
+            },
+          },
+        },
       },
     },
   },
@@ -1182,7 +1211,7 @@ require("keymappings").config()
 require("core.which-key").config()
 require("core.gitsigns").config()
 require("core.compe").config()
-require("core.dashboard").config()
+--require("core.dashboard").config()
 require("core.dap").config()
 require("core.terminal").config()
 require("core.telescope").config()

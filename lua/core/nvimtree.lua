@@ -1,9 +1,10 @@
 local M = {}
 local Log = require "core.log"
 
-M.config = function()
+function M.config()
   lvim.builtin.nvimtree = {
     active = true,
+    on_config_done = nil,
     side = "left",
     width = 30,
     show_icons = {
@@ -14,7 +15,7 @@ M.config = function()
       tree_width = 30,
     },
     ignore = { ".git", "node_modules", ".cache" },
-    auto_open = 1,
+    auto_open = 0,
     auto_close = 1,
     quit_on_open = 0,
     follow = 1,
@@ -48,10 +49,10 @@ M.config = function()
   }
 end
 
-M.setup = function()
+function M.setup()
   local status_ok, nvim_tree_config = pcall(require, "nvim-tree.config")
   if not status_ok then
-    Log:get_default().error "Failed to load nvim-tree.config"
+    Log:error "Failed to load nvim-tree.config"
     return
   end
   local g = vim.g
@@ -64,6 +65,9 @@ M.setup = function()
   if lvim.builtin.project.active then
     vim.g.nvim_tree_update_cwd = 1
     vim.g.nvim_tree_respect_buf_cwd = 1
+    vim.g.nvim_tree_disable_netrw = 0
+    vim.g.nvim_tree_hijack_netrw = 0
+    vim.g.netrw_banner = 0
   end
 
   local tree_cb = nvim_tree_config.nvim_tree_callback
@@ -86,15 +90,19 @@ M.setup = function()
   end
 
   vim.cmd "au WinClosed * lua require('core.nvimtree').on_close()"
+
+  if lvim.builtin.nvimtree.on_config_done then
+    lvim.builtin.nvimtree.on_config_done(nvim_tree_config)
+  end
 end
 
-M.on_open = function()
+function M.on_open()
   if package.loaded["bufferline.state"] and lvim.builtin.nvimtree.side == "left" then
     require("bufferline.state").set_offset(lvim.builtin.nvimtree.width + 1, "")
   end
 end
 
-M.on_close = function()
+function M.on_close()
   local buf = tonumber(vim.fn.expand "<abuf>")
   local ft = vim.api.nvim_buf_get_option(buf, "filetype")
   if ft == "NvimTree" and package.loaded["bufferline.state"] then

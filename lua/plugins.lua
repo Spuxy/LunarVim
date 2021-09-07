@@ -4,15 +4,13 @@ return {
   { "neovim/nvim-lspconfig" },
   { "tamago324/nlsp-settings.nvim" },
   { "jose-elias-alvarez/null-ls.nvim" },
+  { "antoinemadec/FixCursorHold.nvim" }, -- Needed while issue https://github.com/neovim/neovim/issues/12587 is still open
   {
     "kabouzeid/nvim-lspinstall",
     event = "VimEnter",
     config = function()
-      local lspinstall = require "lspinstall"
+      local lspinstall = require "core.lspinstall"
       lspinstall.setup()
-      if lvim.builtin.lspinstall.on_config_done then
-        lvim.builtin.lspinstall.on_config_done(lspinstall)
-      end
     end,
   },
 
@@ -23,9 +21,6 @@ return {
     "nvim-telescope/telescope.nvim",
     config = function()
       require("core.telescope").setup()
-      if lvim.builtin.telescope.on_config_done then
-        lvim.builtin.telescope.on_config_done(require "telescope")
-      end
     end,
     disable = not lvim.builtin.telescope.active,
   },
@@ -36,9 +31,6 @@ return {
     event = "InsertEnter",
     config = function()
       require("core.compe").setup()
-      if lvim.builtin.compe.on_config_done then
-        lvim.builtin.compe.on_config_done(require "compe")
-      end
     end,
     disable = not lvim.builtin.compe.active,
     -- wants = "vim-vsnip",
@@ -73,9 +65,6 @@ return {
     after = "nvim-compe",
     config = function()
       require("core.autopairs").setup()
-      if lvim.builtin.autopairs.on_config_done then
-        lvim.builtin.autopairs.on_config_done(require "nvim-autopairs")
-      end
     end,
     disable = not lvim.builtin.autopairs.active or not lvim.builtin.compe.active,
   },
@@ -87,9 +76,6 @@ return {
     -- run = ":TSUpdate",
     config = function()
       require("core.treesitter").setup()
-      if lvim.builtin.treesitter.on_config_done then
-        lvim.builtin.treesitter.on_config_done(require "nvim-treesitter.configs")
-      end
     end,
   },
 
@@ -101,9 +87,6 @@ return {
     -- commit = "fd7f60e242205ea9efc9649101c81a07d5f458bb",
     config = function()
       require("core.nvimtree").setup()
-      if lvim.builtin.nvimtree.on_config_done then
-        lvim.builtin.nvimtree.on_config_done(require "nvim-tree.config")
-      end
     end,
     disable = not lvim.builtin.nvimtree.active,
   },
@@ -113,9 +96,6 @@ return {
 
     config = function()
       require("core.gitsigns").setup()
-      if lvim.builtin.gitsigns.on_config_done then
-        lvim.builtin.gitsigns.on_config_done(require "gitsigns")
-      end
     end,
     event = "BufRead",
     disable = not lvim.builtin.gitsigns.active,
@@ -126,9 +106,6 @@ return {
     "folke/which-key.nvim",
     config = function()
       require("core.which-key").setup()
-      if lvim.builtin.which_key.on_config_done then
-        lvim.builtin.which_key.on_config_done(require "which-key")
-      end
     end,
     event = "BufWinEnter",
     disable = not lvim.builtin.which_key.active,
@@ -139,10 +116,7 @@ return {
     "terrortylor/nvim-comment",
     event = "BufRead",
     config = function()
-      require("nvim_comment").setup()
-      if lvim.builtin.comment.on_config_done then
-        lvim.builtin.comment.on_config_done(require "nvim_comment")
-      end
+      require("core.comment").setup()
     end,
     disable = not lvim.builtin.comment.active,
   },
@@ -152,9 +126,6 @@ return {
     "ahmedkhalf/project.nvim",
     config = function()
       require("core.project").setup()
-      if lvim.builtin.project.on_config_done then
-        lvim.builtin.project.on_config_done()
-      end
     end,
     disable = not lvim.builtin.project.active,
   },
@@ -177,9 +148,6 @@ return {
     "romgrk/barbar.nvim",
     config = function()
       require("core.bufferline").setup()
-      if lvim.builtin.bufferline.on_config_done then
-        lvim.builtin.bufferline.on_config_done()
-      end
     end,
     event = "BufWinEnter",
     disable = not lvim.builtin.bufferline.active,
@@ -191,9 +159,6 @@ return {
     -- event = "BufWinEnter",
     config = function()
       require("core.dap").setup()
-      if lvim.builtin.dap.on_config_done then
-        lvim.builtin.dap.on_config_done(require "dap")
-      end
     end,
     disable = not lvim.builtin.dap.active,
   },
@@ -212,22 +177,16 @@ return {
     event = "BufWinEnter",
     config = function()
       require("core.dashboard").setup()
-      if lvim.builtin.dashboard.on_config_done then
-        lvim.builtin.dashboard.on_config_done(require "dashboard")
-      end
     end,
     disable = not lvim.builtin.dashboard.active,
   },
 
   -- Terminal
   {
-    "akinsho/nvim-toggleterm.lua",
+    "akinsho/toggleterm.nvim",
     event = "BufWinEnter",
     config = function()
       require("core.terminal").setup()
-      if lvim.builtin.terminal.on_config_done then
-        lvim.builtin.terminal.on_config_done(require "toggleterm")
-      end
     end,
     disable = not lvim.builtin.terminal.active,
   },

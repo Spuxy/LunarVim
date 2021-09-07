@@ -1,10 +1,13 @@
 local M = {}
-M.config = function()
+local home_dir = vim.loop.os_homedir()
+
+M.config = function(config)
   lvim.builtin.dashboard = {
     active = false,
+    on_config_done = nil,
     search_handler = "telescope",
     disable_at_vim_enter = 0,
-    session_directory = os.getenv "HOME" .. "/.cache/lvim/sessions",
+    session_directory = home_dir .. "/.cache/lvim/sessions",
     custom_header = {
       "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⣀⣀⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
       "⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣶⣾⠿⠿⠟⠛⠛⠛⠛⠿⠿⣿⣷⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
@@ -45,7 +48,7 @@ M.config = function()
       },
       e = {
         description = { "  Configuration      " },
-        command = ":e " .. USER_CONFIG_PATH,
+        command = ":e " .. config.path,
       },
     },
 
@@ -91,6 +94,10 @@ M.setup = function()
       { "FileType", "dashboard", "nnoremap <silent> <buffer> q :q<CR>" },
     },
   }
+
+  if lvim.builtin.dashboard.on_config_done then
+    lvim.builtin.dashboard.on_config_done()
+  end
 end
 
 return M

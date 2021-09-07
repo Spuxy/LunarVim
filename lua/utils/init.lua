@@ -70,9 +70,7 @@ function utils.toggle_autoformat()
         },
       },
     }
-    if Log:get_default() then
-      Log:get_default().info "Format on save active"
-    end
+    Log:debug "Format on save active"
   end
 
   if not lvim.format_on_save then
@@ -81,16 +79,16 @@ function utils.toggle_autoformat()
         :autocmd! autoformat
       endif
     ]]
-    if Log:get_default() then
-      Log:get_default().info "Format on save off"
-    end
+    Log:debug "Format on save off"
   end
 end
 
 function utils.reload_lv_config()
   require("core.lualine").config()
-  vim.cmd "source ~/.local/share/lunarvim/lvim/lua/settings.lua"
-  vim.cmd("source " .. USER_CONFIG_PATH)
+
+  local config = require "config"
+  config:load()
+
   require("keymappings").setup() -- this should be done before loading the plugins
   vim.cmd "source ~/.local/share/lunarvim/lvim/lua/plugins.lua"
   local plugins = require "plugins"
@@ -102,7 +100,7 @@ function utils.reload_lv_config()
   -- vim.cmd ":PackerClean"
   local null_ls = require "lsp.null-ls"
   null_ls.setup(vim.bo.filetype, { force_reload = true })
-  Log:get_default().info "Reloaded configuration"
+  Log:info "Reloaded configuration"
 end
 
 function utils.unrequire(m)

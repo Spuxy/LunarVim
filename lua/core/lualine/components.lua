@@ -1,29 +1,47 @@
 local conditions = require "core.lualine.conditions"
 local colors = require "core.lualine.colors"
 
+local function diff_source()
+  local gitsigns = vim.b.gitsigns_status_dict
+  if gitsigns then
+    return {
+      added = gitsigns.added,
+      modified = gitsigns.changed,
+      removed = gitsigns.removed,
+    }
+  end
+end
+
 return {
-  vi_mode = {
+  mode = {
     function()
       return " "
     end,
     left_padding = 0,
     right_padding = 0,
-    condition = conditions.hide_in_width,
+    color = {},
+    condition = nil,
   },
   branch = {
-    "branch",
+    "b:gitsigns_head",
     icon = " ",
-    condition = function()
-      return conditions.hide_in_width() and conditions.check_git_workspace()
-    end,
+    color = { gui = "bold" },
+    condition = conditions.hide_in_width,
+  },
+  filename = {
+    "filename",
+    color = {},
+    condition = nil,
   },
   diff = {
     "diff",
+    source = diff_source,
     symbols = { added = "  ", modified = "柳", removed = " " },
     color_added = { fg = colors.green },
     color_modified = { fg = colors.yellow },
     color_removed = { fg = colors.red },
-    condition = conditions.hide_in_width,
+    color = {},
+    condition = nil,
   },
   python_env = {
     function()
@@ -48,6 +66,7 @@ return {
     "diagnostics",
     sources = { "nvim_lsp" },
     symbols = { error = " ", warn = " ", info = " ", hint = " " },
+    color = {},
     condition = conditions.hide_in_width,
   },
   treesitter = {
@@ -62,9 +81,13 @@ return {
   },
   lsp = {
     function(msg)
-      msg = msg or "LSP Inactive"
+      msg = msg or "LS Inactive"
       local buf_clients = vim.lsp.buf_get_clients()
       if next(buf_clients) == nil then
+        -- TODO: clean up this if statement
+        if type(msg) == "boolean" or #msg == 0 then
+          return "LS Inactive"
+        end
         return msg
       end
       local buf_ft = vim.bo.filetype
@@ -92,12 +115,12 @@ return {
 
       return table.concat(buf_client_names, ", ")
     end,
-    condition = conditions.hide_in_width,
     icon = " ",
     color = { gui = "bold" },
+    condition = conditions.hide_in_width,
   },
-  location = { "location", condition = conditions.hide_in_width },
-  progress = { "progress", condition = conditions.hide_in_width },
+  location = { "location", condition = conditions.hide_in_width, color = {} },
+  progress = { "progress", condition = conditions.hide_in_width, color = {} },
   spaces = {
     function()
       local label = "Spaces: "
@@ -107,13 +130,15 @@ return {
       return label .. vim.api.nvim_buf_get_option(0, "shiftwidth") .. " "
     end,
     condition = conditions.hide_in_width,
+    color = {},
   },
   encoding = {
     "o:encoding",
     upper = true,
+    color = {},
     condition = conditions.hide_in_width,
   },
-  filetype = { "filetype", condition = conditions.hide_in_width },
+  filetype = { "filetype", condition = conditions.hide_in_width, color = {} },
   scrollbar = {
     function()
       local current_line = vim.fn.line "."
@@ -123,8 +148,9 @@ return {
       local index = math.ceil(line_ratio * #chars)
       return chars[index]
     end,
-    color = { fg = colors.yellow, bg = colors.bg },
     left_padding = 0,
     right_padding = 0,
+    color = { fg = colors.yellow, bg = colors.bg },
+    condition = nil,
   },
 }

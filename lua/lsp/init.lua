@@ -19,9 +19,9 @@ local function lsp_highlight_document(client)
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
       [[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceText cterm=bold ctermbg=red guibg=#464646
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#464646
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=#353d46
+      hi LspReferenceText cterm=bold ctermbg=red guibg=#353d46
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=#353d46
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
@@ -44,11 +44,11 @@ local function add_lsp_buffer_keybindings(bufnr)
     ["gd"] = { "<cmd>lua vim.lsp.buf.definition()<CR>", "Goto Definition" },
     ["gD"] = { "<cmd>lua vim.lsp.buf.declaration()<CR>", "Goto declaration" },
     ["gr"] = { "<cmd>lua vim.lsp.buf.references()<CR>", "Goto references" },
-    ["gi"] = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto implementation" },
+    ["gI"] = { "<cmd>lua vim.lsp.buf.implementation()<CR>", "Goto Implementation" },
     ["gs"] = { "<cmd>lua vim.lsp.buf.signature_help()<CR>", "show signature help" },
     ["gp"] = { "<cmd>lua require'lsp.peek'.Peek('definition')<CR>", "Peek definition" },
     ["gl"] = {
-      "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics({ show_header = false, border = 'single' })<CR>",
+      "<cmd>lua require'lsp.handlers'.show_line_diagnostics()<CR>",
       "Show line diagnostics",
     },
   }
@@ -99,14 +99,14 @@ end
 function M.common_on_init(client, bufnr)
   if lvim.lsp.on_init_callback then
     lvim.lsp.on_init_callback(client, bufnr)
-    Log:get_default().info "Called lsp.on_init_callback"
+    Log:debug "Called lsp.on_init_callback"
     return
   end
 
   local formatters = lvim.lang[vim.bo.filetype].formatters
   if not vim.tbl_isempty(formatters) and formatters[1]["exe"] ~= nil and formatters[1].exe ~= "" then
     client.resolved_capabilities.document_formatting = false
-    Log:get_default().info(
+    Log:debug(
       string.format("Overriding language server [%s] with format provider [%s]", client.name, formatters[1].exe)
     )
   end
@@ -115,7 +115,7 @@ end
 function M.common_on_attach(client, bufnr)
   if lvim.lsp.on_attach_callback then
     lvim.lsp.on_attach_callback(client, bufnr)
-    Log:get_default().info "Called lsp.on_init_callback"
+    Log:debug "Called lsp.on_init_callback"
   end
   lsp_highlight_document(client)
   add_lsp_buffer_keybindings(bufnr)
@@ -125,7 +125,7 @@ end
 function M.setup(lang)
   local lsp_utils = require "lsp.utils"
   local lsp = lvim.lang[lang].lsp
-  if lsp_utils.is_client_active(lsp.provider) then
+  if (lsp.active ~= nil and not lsp.active) or lsp_utils.is_client_active(lsp.provider) then
     return
   end
 

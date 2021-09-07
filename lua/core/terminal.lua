@@ -3,6 +3,7 @@ local utils = require "utils"
 
 M.config = function()
   lvim.builtin["terminal"] = {
+    on_config_done = nil,
     -- size can be a number or function which is passed the current terminal
     size = 20,
     -- open_mapping = [[<c-\>]],
@@ -50,6 +51,10 @@ M.setup = function()
     require("core.terminal").add_exec(exec[1], exec[2], exec[3])
   end
   terminal.setup(lvim.builtin.terminal)
+
+  if lvim.builtin.terminal.on_config_done then
+    lvim.builtin.terminal.on_config_done(terminal)
+  end
 end
 
 M.add_exec = function(exec, keymap, name)
@@ -77,7 +82,7 @@ M._exec_toggle = function(exec)
   local binary = M._split(exec)[1]
   if vim.fn.executable(binary) ~= 1 then
     local Log = require "core.log"
-    Log:get_default().error("Unable to run executable " .. binary .. ". Please make sure it is installed properly.")
+    Log:error("Unable to run executable " .. binary .. ". Please make sure it is installed properly.")
     return
   end
   local Terminal = require("toggleterm.terminal").Terminal
@@ -117,7 +122,7 @@ M.toggle_log_view = function(name)
 
   local Terminal = require("toggleterm.terminal").Terminal
   local log_view = Terminal:new(term_opts)
-  -- require("core.log"):get_default().debug("term", vim.inspect(term_opts))
+  -- require("core.log"):debug("term", vim.inspect(term_opts))
   log_view:toggle()
 end
 
