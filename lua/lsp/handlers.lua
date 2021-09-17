@@ -3,35 +3,43 @@
 local M = {}
 
 function M.setup()
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  local config = { -- your config
     virtual_text = lvim.lsp.diagnostics.virtual_text,
-    signs = lvim.lsp.diagnostics.signs.active,
-    underline = lvim.lsp.document_highlight,
-  })
+    signs = lvim.lsp.diagnostics.signs,
+    underline = lvim.lsp.diagnostics.underline,
+    update_in_insert = lvim.lsp.diagnostics.update_in_insert,
+    severity_sort = lvim.lsp.diagnostics.severity_sort,
+  }
+  if vim.fn.has "nvim-0.5.1" > 0 then
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, _)
+      local uri = result.uri
+      local bufnr = vim.uri_to_bufnr(uri)
+      if not bufnr then
+        return
+      end
 
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, _, params, client_id, _)
-    local config = { -- your config
-      virtual_text = lvim.lsp.diagnostics.virtual_text,
-      signs = lvim.lsp.diagnostics.signs,
-      underline = lvim.lsp.diagnostics.underline,
-      update_in_insert = lvim.lsp.diagnostics.update_in_insert,
-      severity_sort = lvim.lsp.diagnostics.severity_sort,
-    }
-    local uri = params.uri
-    local bufnr = vim.uri_to_bufnr(uri)
-
-    if not bufnr then
-      return
+      local diagnostics = result.diagnostics
+      vim.lsp.diagnostic.save(diagnostics, bufnr, ctx.client_id)
+      if not vim.api.nvim_buf_is_loaded(bufnr) then
+        return
+      end
+      vim.lsp.diagnostic.display(diagnostics, bufnr, ctx.client_id, config)
     end
+  else
+    vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, _, params, client_id, _)
+      local uri = params.uri
+      local bufnr = vim.uri_to_bufnr(uri)
+      if not bufnr then
+        return
+      end
 
-    local diagnostics = params.diagnostics
-
-    vim.lsp.diagnostic.save(diagnostics, bufnr, client_id)
-
-    if not vim.api.nvim_buf_is_loaded(bufnr) then
-      return
+      local diagnostics = params.diagnostics
+      vim.lsp.diagnostic.save(diagnostics, bufnr, client_id)
+      if not vim.api.nvim_buf_is_loaded(bufnr) then
+        return
+      end
+      vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
     end
-    vim.lsp.diagnostic.display(diagnostics, bufnr, client_id, config)
   end
 
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
